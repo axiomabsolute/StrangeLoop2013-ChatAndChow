@@ -125,7 +125,8 @@
                 ## Type craziness
 
                 ```csharp
-                Tuple&lt;n*T&gt;(T1 item1, T2 item2, ....)
+                Tuple&lt;n*T&gt;( n*T n*items )
+                // Tuple&lt;Int, Int>(Int val1, Int val2)
                 ```
             </section>
 
@@ -159,10 +160,10 @@
             </section>
 
             <section data-markdown>
-                ## The Option Type
+                ## Null: The billion dollar mistake
                 ```scala
                 val res1: Int = 42
-                val res2: Int = null
+                val res2: Int = null // e.g. the result of a conversion
                 val res3: Int = 3
 
                 System.out.println(res1 + res2 + res3)
@@ -186,14 +187,15 @@
                 ## The Option Type
                 ```scala
                 val res1: Option[Int] = Some(42)
-                val res2: Option[Int] = None
+                // Pretend we're not sure None at compile time
+                val res2: Option[Int] = None 
                 val res3: Option[Int] = Some(3)
 
-                if(res1.isEmpty) return None
-                if(res2.isEmpty) return None
-                if(res3.isempty) return None
+                if(res1.isEmpty) { println("Nada"); return; }
+                if(res2.isEmpty) { println("Nada"); return; }
+                if(res3.isempty) { println("Nada"); return; }
 
-                System.out.println(res1.get + res2.get + res3.get)
+                println(res1.get + res2.get + res3.get)
                 // No printing!
                 ```
             </section>
@@ -237,6 +239,13 @@
                         with
                             | ex -> printfn "%s" (ex.Message);
                     }
+
+                    let runAll() =
+                        urlList
+                        |> Seq.map fetchAsync
+                        |> Async.Parallel 
+                        |> Async.RunSynchronously
+                        |> ignore
                 ```
             </section>
 
@@ -269,11 +278,12 @@
             </section>
 
             <section data-markdown>
+                ## Bounds checking
                 ```c#
                 // We're making up syntax as we go along.
                 class MyList&lt;A, listLength> {
-                    public pairwiseAdd(MyList&lt;A, listLength> other){
-                        var result = new MyList&lt;A, 2*listLength>();
+                    public MyList&lt;A, listLength> pairwiseAdd(MyList&lt;A, listLength> other){
+                        var result = new MyList&lt;A, listLength>();
                         for (var i = 0; i&lt;this.size(); i++){
                             result.add(this.get(i) + other.get(i));
                         }
@@ -284,6 +294,14 @@
                 var list2 = MyList<Integer, 4>(1,2,3,4);
                 list1.pairwiseAdd(list2);
                 // Compile time error; listLength doesn't match!
+                ```
+            </section>
+
+            <section data-markdown>
+                ## Bounds checking
+                ```csharp
+                public MyList&lt;A, listLength+listLength2> 
+                  concat(MyList&lt;A, listLength2> other){...}
                 ```
             </section>
 
@@ -300,6 +318,19 @@
                     </p>
                     <footer>
                         -- Clojure
+                    </footer>
+                </blockquote>
+            </section>
+
+            <section>
+                <blockquote>
+                    <p>
+                        One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies.
+                    </p>
+                    <footer>
+                        -- C. A. R. Hoare
+                        <div class="fragment"><small>(this form the guy who made nulls)</small></div>
+                        <div class="fragment"><small>(not sure I trust him)</small></div>
                     </footer>
                 </blockquote>
             </section>
